@@ -4,6 +4,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from urllib.parse import urlparse, parse_qs
 from cryptography.fernet import Fernet
 from flask import request, jsonify
+import os
 import base64
 import json
 import jwt
@@ -15,7 +16,8 @@ from datetime import datetime, timedelta
 
 hostName = "localhost"
 serverPort = 8080
-password = "test"
+#os.environ['NOT_MY_KEY']="test" #This is for testing purposes if needed. However, since this is not safe, it is commented unless needed so that the real env variable is used.
+password=os.environ.get("NOT_MY_KEY",-1)
 aes_key=base64.urlsafe_b64encode(password.ljust(32, '0')[:32].encode('utf-8'))
 ph=PasswordHasher()
 cipher=Fernet(aes_key)
